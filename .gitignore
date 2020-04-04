@@ -1,0 +1,4 @@
+.idea/
+__pycache__/
+zappa_settings.json
+
