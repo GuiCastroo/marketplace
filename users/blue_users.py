@@ -85,4 +85,4 @@ def update_user_(type_user, update_):
         except ValidationError as error:
             return jsonify(error.messages), HTTPStatus.BAD_REQUEST
     else:
-        return jsonify({'message': f"Not found {update} method to update"}), HTTPStatus.NOT_FOUND
+        return jsonify({'message': f"Not found {update_} method to update"}), HTTPStatus.NOT_FOUND
