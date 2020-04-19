@@ -3,16 +3,17 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from http import HTTPStatus
+import os
 
 
 class SendEmailHTML:
     def __init__(self, from_email, html, subject):
-        self.my_email = 'gscastroo15@gmail.com'
+        self.my_email = os.environ['EMAIL']
         self.from_email = from_email
         self.html = html
         self.subject = subject
-        self._email = 'gscastroo15@gmail.com'
-        self._password = '84624375'
+        self._email =  os.environ['EMAIL']
+        self._password = os.environ['EMAIL_PASSWORD']
 
     def __configure_message(self):
         message = MIMEMultipart('alternative')
