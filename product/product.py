@@ -28,3 +28,5 @@ class RegisterProduct(Connections):
 
 class RegisterStock(Connections):
     ...
+
+
