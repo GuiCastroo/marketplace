@@ -1,45 +1,66 @@
-from flask_marshmallow import Marshmallow
-from marshmallow import fields
-from marshmallow.validate import Range
-
-MA = Marshmallow()
+from marshmallow import fields, Schema
+from marshmallow.validate import Length
 
 
-def configure(app):
-    MA.init_app(app)
-
-
-class ProvideSchema(MA.ModelSchema):
+class LoginSchema(Schema):
     class Meta:
         ordered = True
-    cnpj = fields.String(required=True)
-    email = fields.Email(required=True)
+    email = fields.String(required=True)
     password = fields.String(required=True)
-    responsible_name = fields.String(requeried=True)
-    responsible_cel = fields.String(required=True)
-    site = fields.URL()
-    state_registration = fields.String(required=True)
-    responsible_phone = fields.String(required=True)
-    responsible_position = fields.String(required=True)
+
+
+class ProvideFormsSchema(Schema):
     company_name = fields.String(required=True)
-    city = fields.String(required=True)
-    state = fields.String(required=True)
-    zip_code = fields.String(required=True)
+    response_name = fields.String(required=True)
+    phone = fields.String(required=True)
+    cnpj = fields.String(required=True, validate=[Length(equal=16, error="CNPJ must have of 16 characters")])
 
 
-class CLintSchema(MA.ModelSchema):
+class ProvideRegisterSchema(Schema):
     class Meta:
         ordered = True
-    cpf = fields.String(required=True)
     email = fields.Email(required=True)
     password = fields.String(required=True)
-    first_name = fields.String(requeried=True)
-    last_name = fields.String(required=True)
-    city = fields.String(required=True)
-    state = fields.String(required=True)
-    zip_code = fields.String(required=True)
-    date_birth = fields.Date(required=True)
-    cell = fields.String()
-    phone = fields.String()
-    number_house = fields.Number(required=True)
-    complement = fields.String()
+    forms = fields.Nested(ProvideFormsSchema, required=True)
+
+
+class ClientFormsSchema(Schema):
+    company_name = fields.String(required=True)
+    response_name = fields.String(required=True)
+    phone = fields.String(required=True)
+    cnpj = fields.String(required=True, validate=[Length(equal=16, error="CNPJ must have of 16 characters")])
+
+
+class ClientRegisterSchema(Schema):
+    class Meta:
+        ordered = True
+    email = fields.Email(required=True)
+    password = fields.String(required=True)
+    forms = fields.Nested(ClientFormsSchema, required=True)
+
+
+class ConfirmationUserSchema(Schema):
+    class Meta:
+        ordered = True
+    user_id = fields.String
+
+
+class UpdateEmailSchema(Schema):
+    class Meta:
+        ordered = True
+    email = fields.Email(required=True)
+    new_email = fields.Email(required=True)
+
+
+class UpdateFormsSchema(Schema):
+    class Meta:
+        ordered = True
+    email = fields.Email(required=True)
+    forms = fields.Nested(ProvideFormsSchema, required=True)
+
+
+class ChangePasswordSchema(Schema):
+    class Meta:
+        ordered = True
+    email = fields.Email(required=True)
+    new_password = fields.String(required=True)

@@ -22,7 +22,8 @@ class Connections:
     def __init__(self, table_name):
         self.__engine = create_engine(self.url(), convert_unicode=True)
         self.__meta_data = MetaData(bind=self.__engine)
-        self._table_name = Table(table_name, self.__meta_data, autoload=True)
+        if table_name:
+            self._table_name = Table(table_name, self.__meta_data, autoload=True)
 
     @property
     def table(self):
@@ -33,5 +34,4 @@ class Connections:
         self._table_name = new_table
 
     def connect(self):
-        connect = self.__engine.connect()
-        return connect
+        return self.__engine.connect()
